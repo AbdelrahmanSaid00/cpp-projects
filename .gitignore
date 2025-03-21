@@ -1,0 +1,16 @@
+# Ignore compiled binary files
+*.exe
+*.out
+*.o
+*.obj
+# Ignore build directories
+/build/
+CMakeFiles/
+CMakeCache.txt
+# Ignore precompiled headers
+*.gch
+*.pch
+# Ignore other temporary files
+*.log
+*.tmp
+*.swp
