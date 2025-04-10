@@ -15,3 +15,4 @@ CMakeCache.txt
 *.log
 *.tmp
 *.swp.idea/
+.idea/
