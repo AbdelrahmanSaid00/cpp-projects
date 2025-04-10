@@ -30,13 +30,13 @@ public:
             element[++top] = ele;
         }
     }
-    int pop () {
+    void pop () {
         if(empty()) {
-            cout << "The stack is empty" << endl;
-            return -1;
+            cout << "empty" << endl;
+            return;
         }
         else {
-            return element[top--];
+            top--;
             cap--;
         }
     }
@@ -48,12 +48,6 @@ public:
         else {
             return element[top];
         }
-    }
-    void printStack () {
-        for(int i=0 ; i <=top ; i++) {
-            cout << element[i] << ' ';
-        }
-        cout << endl;
     }
 
 };
@@ -89,10 +83,13 @@ int main () {
     l1.push(5);
     l1.push(6);
     l1.push(7);
-    l1.printStack();
+    while (!l1.empty()) {
+        cout << l1.topp() << ' ';
+        l1.pop();
+    }
+    l1.push(4);
+    cout << endl;
     cout << l1.topp() << endl;
-    cout << l1.pop() <<endl;
-    l1.printStack();
     string s;
     cin >> s;
     if (balanced(s)) {
