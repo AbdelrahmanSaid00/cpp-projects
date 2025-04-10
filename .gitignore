@@ -3,6 +3,7 @@
 *.out
 *.o
 *.obj
+*.xml
 # Ignore build directories
 /build/
 CMakeFiles/
