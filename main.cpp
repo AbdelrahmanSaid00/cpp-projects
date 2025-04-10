@@ -195,6 +195,6 @@ signed main() {
     oddList.Display();
     cout << "Even Numbers: ";
     evenList.Display();
-    cout << "Thanks for using this program." << endl;
+    cout << "*Thanks for using this program*." << endl;
     return 0;
 }
