@@ -14,4 +14,4 @@ CMakeCache.txt
 # Ignore other temporary files
 *.log
 *.tmp
-*.swp
+*.swp.idea/
