@@ -1,17 +1,18 @@
-#include<bits/stdc++.h>
+#include<iostream>
 using namespace std;
 struct node
 {
-    int value =0;
-    node *prev = nullptr;
-    node *next = nullptr;
+    int value = 0;
+    node* prev = nullptr;
+    node* next = nullptr;
 };
+typedef node* ptr;
 class DoubleLS
 {
 private:
-    node *head;
+    node* head;
     int counter;
-    node *tail;
+    node* tail;
 public:
     DoubleLS()
     {
@@ -19,24 +20,14 @@ public:
         counter = 0;
         tail = nullptr;
     }
-    node * END()
-    {
-        if(head == nullptr)
-        {
-            return nullptr;
-        }
-        node * temp = head;
-        while(temp->next != nullptr)
-        {
-            temp = temp->next;
-        }
-        return temp;
+    node* END() {
+        return tail;
     }
-    void insert (int data)
+    void insert(int data)
     {
         node* newNode = new node;
         newNode->value = data;
-        if(head == nullptr)
+        if (head == nullptr)
         {
             head = newNode;
             tail = newNode;
@@ -45,201 +36,116 @@ public:
         }
         else
         {
-            node * temp = head;
-            while(temp->next!= nullptr)
-            {
-                temp = temp->next;
-            }
-            temp->next = newNode;
-            newNode->prev = temp;
-            newNode->next = nullptr;
+            newNode->next = tail->next;
+            newNode->prev = tail;
+            tail->next = newNode;
             tail = newNode;
         }
         counter++;
     }
-    void insertInPosition(int position, int data)
-    {
-        if( position > counter   || position < 1 )
-        {
-            cout<<"Invalid Position" << endl;
+    void insertInPosition(ptr position, int data) {
+        if (position == nullptr) {
+            cout << "not Valid" << endl;
+            return;
         }
-        else if (position == 1)
-        {
-            if(head == nullptr)
-            {
-                insert (data);
-            }
-            else
-            {
-                node* temp = new node;
-                temp->value = data;
-                temp->next = head;
-                head->prev = temp;
-                temp->prev = nullptr;
-                head = temp;
-                counter++;
-            }
-        }
-        else if(position != counter)
-        {
-            node *newNode = new node;
-            node * temp = head ;
-            int find=1;
-            while(temp->next !=nullptr && find < position)
-            {
-                temp = temp->next;
-                find++;
-            }
-            newNode->value = data;
-            newNode->next = temp->next;
-            temp->next->prev = newNode;
-            newNode->prev = temp;
-            temp->next = newNode;
-            counter++;
-        }
-        else if(position == counter)
-        {
+        if (head == nullptr || position == tail) {
             insert(data);
         }
-    }
-    void deleteNode(int position)
-    {
-        if(head == nullptr)
-        {
-            cout<<"The Linked list is empty"<<endl;
+        else if (position == head) {
+            node* newNode = new node;
+            newNode->value = data;
+            newNode->prev = nullptr;
+
+            newNode->next = head;
+            head->prev = newNode;
+
+            head = newNode;
+            counter++;
         }
-        else if(position < 1 || position > counter)
+    }
+    void deleteNode(ptr position)
+    {
+        if (head == nullptr)
         {
-            cout<<"Invalid Position"<<endl;
+            cout << "The Linked list is empty" << endl;
+        }
+        else if (position == nullptr)
+        {
+            cout << "Invalid Position" << endl;
         }
         else
         {
-            if(position == 1)
+            if (position == head)
             {
-                if(counter == 1)
-                {
-                    node *temp = head;
+                    node* temp = head;
+                    head = head->next;
                     delete(temp);
-                    head = nullptr;
-                    counter--;
-                }
-                else
-                {
-                    node *temp = head->next;
-                    node *temp2 = head;
-                    delete(temp2);
-                    head = temp;
                     head->prev = nullptr;
+                    if (head == nullptr)
+                        tail = head;
                     counter--;
-                }
             }
-            else if(position < counter)
+            else if( position == tail)
             {
-                node *temp = head;
-                int cnt = 2;
-                while(temp!= nullptr && cnt < position)
-                {
-                    temp = temp->next;
-                    cnt++;
-                }
-                node *denode = temp->next;
-                temp->next = temp->next->next;
-                if(temp->next != nullptr)
-                {
-                    temp->next->prev = temp;
-                }
-                delete(denode);
+                node* temp = tail;
+                tail = tail->prev;
+                tail->next = nullptr;
+                delete(temp);
                 counter--;
             }
             else
             {
-                node *temp = tail;
-                tail = tail->prev;
-                delete(temp);
+                position->prev->next = position->next;
+                position->next->prev = position->prev;
+                position->next = nullptr;
+                position->prev = nullptr;
+                delete position;
                 counter--;
             }
+
         }
     }
     void display()
     {
-        if(head == nullptr)
+        if (head == nullptr)
         {
-            cout<<"The Linked list is empty"<<endl;
+            cout << "The Linked list is empty" << endl;
         }
         else
         {
-            node *temp = head;
-            while(temp != nullptr)
+            node* temp = head;
+            while (temp != nullptr)
             {
                 cout << temp->value << " ";
                 temp = temp->next;
             }
-            cout  << endl;
+            cout << endl;
         }
     }
-    node *Location(int data)
+    node* Locate(int data)
     {
-        bool valid = false;
-        node *temp = head;
-        while(temp != nullptr)
+        node* temp = head;
+        while (temp != nullptr)
         {
-            if(temp->value == data)
+            if (temp->value == data)
             {
-                valid = true;
-                break;
+                return temp;
             }
             temp = temp->next;
         }
-        if(!valid)
-        {
-            return nullptr;
-        }
-        else
-        {
-            return temp;
-        }
+        return temp;
     }
-    int Value (node *temp)
+    int Retrieve(node* temp)
     {
-        if(temp == nullptr)
-        {
-            return -1;
-        }
-        else
-        {
-            return temp->value;
-        }
+        return (temp==nullptr)?-1:temp->value;
     }
 
-    node *&fisrtNode()
+    node* fisrt()
     {
         return head;
     }
 
-    node *&LastNode()
-    {
-        return tail;
-    }
-    int Postion (node *temp)
-    {
-        if(temp == nullptr)
-        {
-            return -1;
-        }
-        int cnt =1;
-        node * fnode = head;
-        while(fnode != nullptr)
-        {
-            if(fnode == temp)
-            {
-                return cnt;
-            }
-            fnode = fnode->next;
-            cnt++;
-        }
-        return -1;
-    }
-    node* Next (node* temp)
+    node* Next(node* temp)
     {
         if (temp == nullptr)
         {
@@ -248,49 +154,28 @@ public:
         }
         return temp->next;
     }
-    node *prev (node *temp)
+    node* prev_back(node* temp)
     {
         if (temp == nullptr)
         {
             cout << "Not Founded" << endl;
             return nullptr;
         }
-        node *foundNode = head;
-        while(foundNode->next != nullptr && foundNode->next != temp)
-        {
-            foundNode = foundNode->next;
-        }
-        return foundNode;
+        return temp->prev;
     }
-    int Length ()
-    {
-        return counter;
-    }
-    void marge(DoubleLS &marge1 , DoubleLS &marge2)
-    {
-       node *m1 = marge1.head;
-       node *m2 = marge2.head;
-       while(m1) {
-            insert(m1->value);
-            m1 = m1->next;
-       }
-       while(m2) {
-            insert(m2->value);
-            m2 = m2->next;
-       }
-    }
-    void deleteNodeP(node *temp) {
-        if(temp == head) {
-            node *del = head;
+    void deleteNodeP(node* temp) {
+        //طيب ما انت شاطر اهو اومال ممرمطني ليه من الصبح!!!
+        if (temp == head) {
+            node* del = head;
             head = head->next;
             head->prev = nullptr;
-            if(!head->next) {
+            if (!head->next) {
                 tail = head;
             }
             delete del;
         }
-        else if(temp == tail) {
-            node *del = tail;
+        else if (temp == tail) {
+            node* del = tail;
             tail = tail->prev;
             tail->next = nullptr;
             delete del;
@@ -301,44 +186,63 @@ public:
             delete temp;
         }
     }
-    void purge () {
-        node *start = head;
-        if(counter == 1) {
-            return;
-        }
-        else if(head == nullptr) {
-            return;
-        }
-        while(start !=nullptr) {
-            node *fast = start->next;
-            while(fast) {
-                node *save = fast->next;
-                if(fast->value == start->value && fast !=start) {
-                    deleteNodeP(fast);
-                }
-                fast = save;
-            }
-            start = start->next;
-        }
+    node*& hea () {
+        return head;
     }
-    void reverse ()
-    {
-        if(tail == nullptr || head == nullptr)
-        {
-            cout << "The linked list is empty"  << endl;
-            return;
-        }
-        node *cur = head;
-        while(cur != nullptr)
-        {
-            node *temp = cur->next;
-            cur->next = cur->prev;
-            cur->prev = temp;
-            cur = temp;
-        }
-        swap(tail, head);
+    node*& tai() {
+        return tail;
     }
+
 };
+void marge(DoubleLS& marge1, DoubleLS& marge2)
+{
+    DoubleLS merge;
+    node* m1 = marge1.fisrt();
+    node* m2 = marge2.fisrt();
+    while (m1) {
+        merge.insert(marge1.Retrieve(m1));
+        m1 = marge1.Next(m1);
+    }
+    while (m2) {
+        merge.insert(marge2.Retrieve(m2));
+        m2 = marge1.Next(m2);
+    }
+    cout << "The data is " << endl;
+    merge.display();
+}
+void purge(DoubleLS &l) {
+    //this is application must be outside the class
+    node* start = l.fisrt();
+    if (start == nullptr) {
+        return;
+    }
+    while (start != nullptr) {
+        node* fast = l.Next(start);
+        while (fast) {
+            node* save = l.Next(fast);
+            if (l.Retrieve(fast) == l.Retrieve(start) && fast != start) {
+                l.deleteNodeP(fast);
+            }
+            fast = save;
+        }
+        start = l.Next(start);
+    }
+}
+void Reverse(DoubleLS &l)
+{
+    if (l.END() == nullptr || l.fisrt() == nullptr)
+    {
+        cout << "The linked list is empty" << endl;
+        return;
+    }
+    node* cur = l.fisrt();
+    while (cur != nullptr)
+    {
+        swap(cur->prev , cur->next);
+        cur = cur->prev;
+    }
+    swap (l.hea() ,l.tai());
+}
 
 int main()
 {
@@ -350,38 +254,29 @@ int main()
     l1.insert(9);
     l1.insert(9);
     l1.insert(1);
-    l1.insertInPosition(4,10);
+    l1.insertInPosition(l1.fisrt(), 10);
     l2.insert(4);
     l2.insert(1);
     l2.insert(3);
-    l2.insert(2);
+    l2.insertInPosition(l2.END(), 2);
     l2.insert(7);
-    l2.insertInPosition(1,6);
+    l2.insertInPosition(l2.prev_back(l2.END()), 6);
     l1.display();
     l2.display();
     cout << "************" << endl;
-    l1.deleteNode(3);
+    l1.deleteNode(l1.fisrt());
+    l1.display();
+    l1.deleteNode(l1.Next(l1.fisrt()));
     l1.display();
     cout << "************" << endl;
-    l2.deleteNode(1);
+    l2.deleteNode(l2.END());
     l2.display();
     cout << "************" << endl;
-    l3.marge(l1,l2);
-    l3.display();
+    marge(l1,l2);
+    cout <<endl;
     cout << "************" << endl;
-    l1.reverse();
-    l1.display();
-    cout << "************" << endl;
-    cout << l1.Postion(l1.fisrtNode()) << endl;
-    cout << l1.Postion(l1.Location(9)) << endl;
-    cout << l1.Postion(l1.Next(l1.Location(9))) << endl;
-    cout << l1.Postion(l1.Next(l1.Next(l1.Location(9)))) << endl;
-    cout << "************" << endl;
-    cout << "the length of l1 is : "  << l1.Length() << endl;
-    cout << "the length of l2 is : "  << l2.Length() << endl;
-    cout << "the length of l3 is : "  << l3.Length() << endl;
-    cout << "************" << endl;
-    l1.purge();
+    purge(l1);
+    Reverse(l1);
     l1.display();
     cout << "******THANKS******" << endl;
     return 0;
