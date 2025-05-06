@@ -61,6 +61,14 @@ public:
 
             head = newNode;
             counter++;
+        }else {
+            node* newNode = new node;
+            newNode->value = data;
+            newNode->prev = position->prev;
+            newNode->next = position;
+            position->prev->next = newNode;
+            position->prev = newNode;
+            counter++;
         }
     }
     void deleteNode(ptr position)
