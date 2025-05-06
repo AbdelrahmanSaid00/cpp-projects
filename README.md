@@ -9,6 +9,7 @@ These implementations help me understand the core fundamentals of data structure
 - ✅ Single Linked List
 - ✅ Double Linked List
 - ✅ Stack (Implemented using Linked List and array)
+- ✅ Binary search tree
 - 🚧 More topics to be added soon...
 ---
 ## 💻 Requirements
