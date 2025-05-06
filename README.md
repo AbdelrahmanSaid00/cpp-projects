@@ -10,7 +10,8 @@ These implementations help me understand the core fundamentals of data structure
 - ✅ Double Linked List
 - ✅ Stack (Implemented using Linked List and array)
 - ✅ Binary search tree
-- 🚧 More topics to be added soon...
+- ✅ Hash Table (Implemented using Linked List)
+- ✅ Everything's covered !
 ---
 ## 💻 Requirements
 - C++ Compiler (e.g., `g++`, CodeBlocks, VSCode, etc.)
